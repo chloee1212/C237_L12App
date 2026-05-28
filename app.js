@@ -1,40 +1,31 @@
-// Import required modules
 const express = require('express');
 const app = express();
 
-// Set EJS as view engine
 app.set('view engine', 'ejs');
-
-// Middleware
 app.use(express.urlencoded({ extended: true }));
 
-// In-memory array
 let items = [];
 let id = 1;
 
-// -------------------- ROUTES --------------------
-
-// HOME PAGE
+// HOME
 app.get('/', (req, res) => {
-    // calculate total cups
     let total = items.reduce((sum, item) => sum + Number(item.cups), 0);
-
     res.render('index', { total });
 });
 
-// SHOW ADD PAGE
+// ADD PAGE
 app.get('/add', (req, res) => {
     res.render('add');
 });
 
-// HANDLE ADD WATER (POST)
+// ADD POST
 app.post('/add', (req, res) => {
     const { cups, notes } = req.body;
 
     items.push({
         id: id++,
         cups: Number(cups),
-        notes: notes
+        notes
     });
 
     res.redirect('/');
@@ -45,23 +36,16 @@ app.get('/history', (req, res) => {
     res.render('history', { items });
 });
 
-// DELETE ENTRY
+// DELETE
 app.post('/delete/:id', (req, res) => {
-    const idToDelete = Number(req.params.id);
-    items = items.filter(item => item.id !== idToDelete);
-
+    items = items.filter(i => i.id !== Number(req.params.id));
     res.redirect('/history');
 });
 
-// RESET ALL DATA
+// RESET
 app.post('/reset', (req, res) => {
     items = [];
     res.redirect('/');
 });
 
-// -------------------- SERVER --------------------
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(3000, () => console.log("http://localhost:3000"));
