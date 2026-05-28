@@ -11,7 +11,7 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
 // Declare any necessary variables or in-memory data structures here
-
+let items = [];
 
 // TASK: Define appropriate routes below
 // ---------------------------------------------------
